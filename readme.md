@@ -42,6 +42,9 @@ cd photoapp/node
 #create database tables
 psql -h localhost -U geodb -W locophoto < database.sql
 
+# install libraries
+npm install
+
 #start the server
 node photoserver.js
 ```
