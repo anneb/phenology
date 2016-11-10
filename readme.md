@@ -13,8 +13,8 @@ Build app from source
 * bower
 
 ```
-git clone this_repository.git
-cd photoapp/www/ol3
+git clone https://github.com/anneb/phenology.git
+cd phenology/www/ol3
 bower install
 cd ../..
 cordova platform add android
