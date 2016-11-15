@@ -57,6 +57,8 @@ Overview
 Server API
 ------
 
+This API description documents only the publicly accessible functions. Many  functions such as for uploading, updating or editing require a device id or user credentials. For these (private) functions, please refer to file photoserver.js.
+
 ### /getphotos
 __Request Type__: http GET
 
@@ -79,4 +81,3 @@ __Request Type__: http GET
 __Response__: Returns a photo or animation indicated by 'filename'. Filenames can be obtained by a request to /getphotos. If the filename extension is '.gif', the resulting image will be an animation of all photos taken at the same location. If the '.gif' extension is replaced by '.jpg', the first static photo is returned.
 
 example: https://phenology.geodan.nl/uploads/fd55236bc1d9f8ab13d53204fa908dd4.gif
-
