@@ -57,7 +57,7 @@ Overview
 Server API
 ------
 
-#### /getphotos
+### /getphotos
 __Request Type__: http GET
 
 __Response__: Returns a JSON list of all public viewable photos on the server formatted as [GeoJSON featurecollection](http://geojson.org/geojson-spec.html).
@@ -73,7 +73,7 @@ Every photo has the following attributes:
 
 example: https://phenology.geodan.nl/photoserver/getphotos
 
-#### /uploads/filename
+### /uploads/filename
 __Request Type__: http GET
 
 __Response__: Returns a photo or animation indicated by 'filename'. Filenames can be obtained by a request to /getphotos. If the filename extension is '.gif', the resulting image will be an animation of all photos taken at the same location. If the '.gif' extension is replaced by '.jpg', the first static photo is returned.
