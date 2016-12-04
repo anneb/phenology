@@ -190,17 +190,16 @@
             background-color: white;
             color: red;
         }
-
         #camerabackground {
             display: none;
             height: 100%;
-            position: fixed;
+            position: absolute;
             overflow: hidden;
             left: 0px;
             right: 0px;
             bottom: 0px;
             top: 0px;
-            margin: 4px;
+            margin: 1px;
             border: 1px solid yellow;
             background-color: rgba(0,0,0,0);
         }
@@ -210,13 +209,37 @@
             top: 80px;
             color: yellow;
         }
-        #overlaypicture {
-          position: fixed;
-          left: 0px;
-          top: 0px;
-          width: 100%;
-          heigt: 100%;
-          opacity: 0.5;
+        @media all and (orientation:portrait) {
+          #overlaypicture {
+            position: relative;
+            right: -50%;
+            top: 0px;
+            width: auto;
+            height: 100%;
+            opacity: 0.5;
+          }
+          #photoframe {
+            position: relative;
+            float: right;
+            right: 50%;
+            height: 100%;
+            width: auto;
+            left: auto;
+            border: green 2px solid;
+          }
+        }
+        @media all and (orientation:landscape) {
+          #overlaypicture {
+            position: absolute;
+            width: 100%;
+            opacity: 0.5;
+            transform: translateY(-50%);
+          }
+          #photoframe {
+            position: relative;
+            width: 100%;
+            top: 50%;
+          }
         }
         #takephotobutton {
             position: fixed;
@@ -502,7 +525,9 @@
 
 <!-- #mapcontainer -->
 <div id="camerabackground">
-    <img id="overlaypicture" class="hidden" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></img>
+    <div id="photoframe">
+      <img id="overlaypicture" class="hidden" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></img>
+    </div>
     <span id="takephotobutton" class="button active" title="take photo">
       <svg class="icon"><use xlink:href="#camera-alt" /></svg>
     </span>

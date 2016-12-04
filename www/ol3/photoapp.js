@@ -104,20 +104,25 @@ function checkCameraPermissions(me, okCallback)
 {
   if (typeof cordova !== 'undefined') {
     // check Camera Permissions
-    var permissions = cordova.plugins.permissions;
-    permissions.hasPermission(permissions.CAMERA, function(status) {
-      if (!status.hasPermission) {
-        permissions.requestPermission(permissions.CAMERA, function(status){
-          if (status.hasPermission) {
-            // yes we have received permission!
-            okCallback.call(me);
-          }
-        }, null);
-      } else {
-        // we have permission
-        okCallback.call(me);
-      }
-    }, null);
+    if (cordova.plugins && cordova.plugins.permissions) {
+      var permissions = cordova.plugins.permissions;
+      permissions.hasPermission(permissions.CAMERA, function(status) {
+        if (!status.hasPermission) {
+          permissions.requestPermission(permissions.CAMERA, function(status){
+            if (status.hasPermission) {
+              // yes we have received permission!
+              okCallback.call(me);
+            }
+          }, null);
+        } else {
+          // we have permission
+          okCallback.call(me);
+        }
+      }, null);
+    } else {
+      // no permission plugin available on this platform
+      okCallback.call(me);
+    }
   }
 }
 
@@ -137,9 +142,27 @@ function showcamera(camerabackground) { // displays the camera in the camerawind
 
 
     if (typeof cordova !== 'undefined') { /* test for non-cordova environments */
-        var width = screen.width; //camerabackground.offsetWidth;
-        //var width = window.device.width;
-        var height = screen.height; //camerabackground.offsetHeight;
+        var width = camerabackground.offsetWidth;
+        var height = camerabackground.offsetHeight;
+        if (width > height) {
+          // landscape
+          if (screen.width > screen.height) {
+            width = screen.width;
+            height = screen.height;
+          } else {
+            width = screen.height;
+            height = screen.width;
+          }
+        } else {
+          // portrait
+          if (screen.width < screen.height) {
+            width = screen.width;
+            height = screen.height;
+          } else {
+            width = screen.height;
+            height = screen.width;
+          }
+        }
 
         // show or hide overlaypicture
         var pic = document.getElementById("overlaypicture");
@@ -153,9 +176,8 @@ function showcamera(camerabackground) { // displays the camera in the camerawind
         }
 
         document.querySelector("#caminfo").innerHTML = "width: " + width + ", height: " + height + ", ratio: " + window.devicePixelRatio;
-        var x = (screen.width - width) / 2, y = (screen.height - height)/2;
 
-        CameraPreview.startCamera({x: x, y: y, width: width, height: height, camera: "back", tapPhoto: tapEnabled, previewDrag: dragEnabled, toBack: toBack});
+        CameraPreview.startCamera({x: 0, y: 0, width: width, height: height, camera: "back", tapPhoto: tapEnabled, previewDrag: dragEnabled, toBack: toBack});
         CameraPreview.setZoom(0);
     }
 }
@@ -385,6 +407,7 @@ var setup = function() {
       }
     }
 
+    // if feature then show photo + information (not yet) in small pop-up on map else hide popup
     var displayFeatureInfo = function (feature, userLocation) {
       if (feature) {
         var geometry = feature.getGeometry();
@@ -421,7 +444,7 @@ var setup = function() {
 
         if (distance < 0.08) {
           var cambutton = '<span id="info-camerabutton" class="button active" title="camera"><svg class="icon"><use xlink:href="#add-a-photo" /></svg></span>';
-          info.innerHTML = '<img width="100%" src="' + picture_url +'">' + cambutton;
+          info.innerHTML = '<img width="100%" src="' + picture_url +'" data-photoid="'+feature.get('id')+'">' + cambutton;
           document.getElementById("info-camerabutton").addEventListener('click', function(event) {
             event.stopPropagation(); // do not click on photopopup
             ensureDeviceRegistration(function(result){
@@ -442,7 +465,7 @@ var setup = function() {
             });
           });
         } else {
-          info.innerHTML = '<img width="100%" src="' + picture_url +'">';
+          info.innerHTML = '<img width="100%" src="' + picture_url + '" data-photoid="'+feature.get('id') +'">';
         }
         photopopupIsOpening = true;
         setTimeout(function() { photopopupIsOpening = false}, 500);
@@ -452,6 +475,40 @@ var setup = function() {
         hideInfoWindow();
       }
     };
+
+    // get all photos that are part of photo animation
+    function getPhotoSet(photoid, callback) {
+      var xhr = new XMLHttpRequest();
+      var formData = "photoid=" + photoid;
+      xhr.open("POST", server+"/photoserver/getphotoset");
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+      xhr.onreadystatechange = function (event) {
+         if (xhr.readyState === 4) {
+             if (xhr.status === 200) {
+               callback (null, xhr.responseText);
+             } else {
+                callback("Error", xhr.statusText);
+             }
+         }
+      };
+      xhr.send(formData);
+    }
+
+
+    function showAnimation()
+    {
+      var fullscreenphotoframe = document.querySelector("#fullscreenphotoframe");
+      var popupphoto = document.querySelector("#photopopup img");
+      // var photoid = popupphoto.dataset.photoid; // november 2016: not supported in older mobile browsers
+      var photoid = popupphoto.getAttribute("data-photoid");
+      getPhotoSet(photoid, function(err, result) {
+          if (!err) {
+            console.log(result);
+          } else {
+            console.log(err);
+          }
+      })
+    }
 
     function hideFullscreenPhotoFrame()
     {
@@ -470,6 +527,9 @@ var setup = function() {
       fullscreenphoto.src = popupphoto.src;
       fullscreenphotoframe.classList.remove("hidden");
       document.addEventListener("backbutton", hideFullscreenPhotoFrame, false);
+      if (popupphoto.src.substr(-4, 4) == ".gif") {
+          showAnimation();
+      }
     });
 
     var fullscreenphotoframe = document.querySelector("#fullscreenphotoframe");

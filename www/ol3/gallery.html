@@ -27,6 +27,40 @@
     <link href="jumbotron-narrow.css" rel="stylesheet">
 
 <style>
+.button {
+    width: 40px;
+    height: 40px;
+    background: #aaa;
+    border-radius: 100%;
+    box-sizing: border-box;
+    outline: none;
+    padding: 8px;
+    position: relative;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+#closebutton {
+    position: relative;
+    top: 20px !important;
+    right: 20px !important;
+}
+.buttonicon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: -8px;
+    margin-left: -8px;
+    margin-right: 5px;
+    background: transparent;
+    fill: green;
+}
 .icon {
     width: 24px;
     height: 24px;
@@ -232,6 +266,9 @@ function deletephoto()
     <div class="jumbotron">
       <h1>Manage Photos</h1>
       <p class="lead"></p>
+      <span id="closebutton" class="button" title="close this window">
+          <svg class="buttonicon"><use xlink:href="#cancel" /></svg>
+      </span>
     </div>
 
     <div class="row marketing">

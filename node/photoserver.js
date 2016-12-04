@@ -72,8 +72,6 @@ function createCollection(features, message, errno) {
         return featureCollection;
 }
 
-
-
 app.get('/photoserver/getphotos', cors(), function(req, res) {
   console.log('GET /photoserver/getphotos');
   var sql = "select id, ST_AsGeoJSON(location) geom, accuracy, case when animationfilename is null then filename else animationfilename end filename, time, width, height from photo where visible=true and rootid=0";
@@ -88,6 +86,23 @@ app.get('/photoserver/getphotos', cors(), function(req, res) {
       res.end('error: ' + reason);
     });
 });
+
+app.post('/photoserver/getphotoset', cors(), function(req, res) {
+  console.log('POST /photoserver/getphotoset');
+  var photoid = req.body.photoid;
+  sql = "select id, ST_AsGeoJSON(location) geom, accuracy, filename, time, width, height from photo where rootid=$1 or id=$1 order by time";
+  dbPool.query(sql, [photoid])
+    .then(function(result){
+      res.json(createCollection(result.rows, null, null));
+      res.end();
+    })
+    .catch(function(reason){
+      console.log(reason);
+      res.writeHead(500, {'Content-Type' : 'text/html'});
+      res.end('error: ' + reason);
+    });
+});
+
 
 app.post('/photoserver/getmyphotos', cors(), function(req, res) {
   console.log('POST /photoserver/getmyphotos');

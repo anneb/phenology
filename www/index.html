@@ -20,8 +20,8 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script src="ol3/openlayers/v3.11.2/build/ol.js"></script>
     <script>
-    if (typeof cordova != "undefined") {
-      // app version
+    if (typeof cordova != "undefined" && cordova.plugins && cordova.plugins.permissions) {
+      // cordova permissions available
       document.addEventListener('deviceready', function() {
         // device is ready, check if permissions are set
         var permissions = cordova.plugins.permissions;
@@ -59,7 +59,7 @@
         permissions.hasPermission(permissions.ACCESS_FINE_LOCATION, checkPermissionFineLocationCallback, null);
       }, false);
     } else {
-      // non-app version
+      // cordova permissions not available
       setTimeout(function(){ window.location = "ol3/index.html"}, 2000);
     }
 
@@ -77,7 +77,7 @@
       <div class="container">
         <div class="jumbotron">
           <img src="phenolgyicon.svg" class="img-responsive">
-          <h1>Phenology</h1>
+          <h1>GrowApp</h1>
           <p class="lead">Animate your environment</p>
         </div>
         <div class="row marketing">
