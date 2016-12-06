@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Page Title</title>
+	<title>GrowApp</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
   <!--link rel="stylesheet" href="../openlayers/v3.11.2/css/ol.css" type="text/css"-->
 	<link rel="stylesheet" href="style.css" />
-  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   <script src="openlayers/v3.11.2/build/ol.js"></script>
   <script src="proj4js/2.3.6/proj4.js"></script>
   <!--script src="jquery.1.12.4.min.js"></script>
@@ -15,22 +15,32 @@
 
   <script src="config.js"></script>
   <script src="photoapp.js"></script>
-
+<script id="panel-init">
+		$(function() {
+			$( "body>[data-role='panel']" ).panel();
+		});
+	</script>
+	<style>
+	    /* icons from https://github.com/commadelimited/jQuery-Mobile-Icon-Pack/tree/master/dist */
+		.ui-icon-help:after { background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%20Tiny%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11-tiny.dtd%22%3E%3Csvg%20version%3D%221.1%22%20baseProfile%3D%22tiny%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%20500%20500%22%20xml%3Aspace%3D%22preserve%22%3E%20%3Cpath%20d%3D%22M250%20383.929v-53.571q0-3.906-2.511-6.417t-6.417-2.511h-53.571q-3.906%200-6.417%202.511t-2.511%206.417v53.571q0%203.906%202.511%206.417t6.417%202.511h53.571q3.906%200%206.417-2.511t2.511-6.417zM321.429%20196.429q0-24.554-15.485-45.48t-38.644-32.366-47.433-11.44q-67.801%200-103.516%2059.431-4.185%206.696%202.232%2011.719l36.831%2027.902q1.953%201.674%205.301%201.674%204.464%200%206.976-3.348%2014.788-18.973%2023.996-25.669%209.487-6.696%2023.996-6.696%2013.393%200%2023.856%207.254t10.463%2016.462q0%2010.603-5.581%2017.020t-18.973%2012.556q-17.578%207.813-32.227%2024.135t-14.648%2035.017v10.044q0%203.906%202.511%206.417t6.417%202.511h53.571q3.906%200%206.417-2.511t2.511-6.417q0-5.301%205.999-13.812t15.207-13.812q8.929-5.022%2013.672-7.952t12.835-9.766%2012.417-13.393%207.813-16.88%203.488-22.601zM428.571%20250q0%2058.315-28.739%20107.562t-77.985%2077.985-107.562%2028.739-107.562-28.739-77.985-77.985-28.739-107.562%2028.739-107.562%2077.985-77.985%20107.562-28.739%20107.562%2028.739%2077.985%2077.985%2028.739%20107.562z%22%20fill%3D%22%23ffffff%22%20%2F%3E%3C%2Fsvg%3E"); 
+		   background-repeat: no-repeat;
+		   background-position: 4px 3px;}
+        .ui-icon-question:after { background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%20Tiny%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11-tiny.dtd%22%3E%3Csvg%20version%3D%221.1%22%20baseProfile%3D%22tiny%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%20500%20500%22%20xml%3Aspace%3D%22preserve%22%3E%20%3Cpath%20d%3D%22M196.429%20350.446v66.964q0%204.464-3.348%207.813t-7.813%203.348h-66.964q-4.464%200-7.813-3.348t-3.348-7.813v-66.964q0-4.464%203.348-7.813t7.813-3.348h66.964q4.464%200%207.813%203.348t3.348%207.813zM284.598%20183.036q0%2015.067-4.325%2028.181t-9.766%2021.345-15.346%2016.602-16.043%2012.137-17.020%209.905q-11.44%206.417-19.113%2018.136t-7.673%2018.694q0%204.743-3.348%209.068t-7.813%204.325h-66.964q-4.185%200-7.115-5.162t-2.93-10.463v-12.556q0-23.159%2018.136-43.667t39.899-30.273q16.462-7.534%2023.438-15.625t6.976-21.206q0-11.719-12.974-20.647t-29.995-8.929q-18.136%200-30.134%208.091-9.766%206.976-29.855%2032.087-3.627%204.464-8.649%204.464-3.348%200-6.976-2.232l-45.759-34.877q-3.627-2.79-4.325-6.976t1.535-7.813q44.643-74.219%20129.464-74.219%2022.321%200%2044.922%208.649t40.737%2023.159%2029.576%2035.575%2011.44%2044.224z%22%20fill%3D%22%23ffffff%22%20%2F%3E%3C%2Fsvg%3E"); 
+          background-repeat: no-repeat;
+          background-position: 6px 3px;}		   
+	</style>
 
 </head>
 
 <body onload=loadmap()>
-  <!-- Start of first page -->
+	-- Start of first page -->
 <div data-role="page" id="foo">
 
-  <div data-role="panel" id="mypanel" data-position="left" data-display="overlay">
-    <!-- panel content goes here -->
-    Panel content
-</div><!-- /panel -->
-
-
-	<div data-role="header" data-position="fixed">
-		<h1>Foo</h1>
+ 	<div data-role="header" data-position="fixed">
+		<h1>GrowApp Map</h1>
+		<a href="../panel/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+		<a href="#menupanel" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bars"></a>
+		
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content">
@@ -63,5 +73,14 @@
 		<h4>Page Footer</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
+<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="a">
+
+        <h3>Menu Panel: Overlay</h3>
+        <p>This panel is positioned on the left with the overlay display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
+        <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
+        <a href="#demo-links" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-btn-inline">Close panel</a>
+        <a href="#bar" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-question ui-btn-icon-left ui-btn-inline">Help</a>
+
+	</div><!-- panel -->
 </body>
 </html>
